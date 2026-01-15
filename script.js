@@ -28,9 +28,18 @@ let audioStream;
 function inicializarChat() {
     const chatInput = document.getElementById('chat-input');
     const recordBtn = document.getElementById('record-btn');
-    const chatMessages = document.getElementById('chat-messages');
+    const sendBtn = document.getElementById('send-btn');
+    const chatMessages = document.getElementById('chat-mensagens');
     
-    if (!chatInput || !recordBtn) return;
+    if (!chatInput || !recordBtn || !sendBtn) return;
+    
+    // Enviar mensagem ao clicar no botão de enviar
+    sendBtn.addEventListener('click', function() {
+        if (chatInput.value.trim()) {
+            enviarMensagem(chatInput.value);
+            chatInput.value = '';
+        }
+    });
     
     // Enviar mensagem ao pressionar Enter
     chatInput.addEventListener('keypress', function(e) {
@@ -51,7 +60,7 @@ function inicializarChat() {
 }
 
 function enviarMensagem(texto) {
-    const chatMessages = document.getElementById('chat-messages');
+    const chatMessages = document.getElementById('chat-mensagens');
     const horaAtual = new Date().toLocaleTimeString('pt-BR', { 
         hour: '2-digit', 
         minute: '2-digit' 
@@ -59,14 +68,14 @@ function enviarMensagem(texto) {
     
     // Criar mensagem do usuário
     const mensagemDiv = document.createElement('div');
-    mensagemDiv.className = 'message sent';
+    mensagemDiv.className = 'mensagem mensagem-enviada';
     mensagemDiv.innerHTML = `
-        <div class="message-content">
-            <div class="message-bubble sent">
+        <div class="mensagem-conteudo">
+            <div class="mensagem-balao mensagem-balao-enviada">
                 <p>${texto}</p>
             </div>
-            <div class="message-status">
-                <span class="message-hora">${horaAtual}</span>
+            <div class="mensagem-status">
+                <span class="mensagem-hora">${horaAtual}</span>
                 <span class="material-symbols-outlined">done_all</span>
             </div>
         </div>
@@ -92,14 +101,14 @@ function enviarMensagem(texto) {
         });
         
         const respostaDiv = document.createElement('div');
-        respostaDiv.className = 'message received';
+        respostaDiv.className = 'mensagem mensagem-recebida';
         respostaDiv.innerHTML = `
-            <div class="message-foto"></div>
-            <div class="message-content">
-                <div class="message-bubble">
+            <div class="mensagem-foto" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCo2WOsnviTirPXViHLuIQx6Fc7P9RB04Mt2QW0Ne2r2uObuBI99pgO9Rwy0EMxZSQ8A90BNE-k-TPjnd6so7pDr1NlkwLqUCCBP0u8h704f5m159sd2XuCmX3Od-M3z99hL3voS5JZNWz7kNUFU6W9gmirlsY_s-eciw9XgtG1opIMFE6hWXIHKonrviDD-aYh6TLvnPlwTgJHKUCHDen1hK_Eut_AKTjhjZGNVC13TpeVDgBM0lV_YLF_WUdfQKipbGdIrG9T52c')"></div>
+            <div class="mensagem-conteudo">
+                <div class="mensagem-balao">
                     <p>${respostaAleatoria}</p>
                 </div>
-                <span class="message-hora">${horaResposta}</span>
+                <span class="mensagem-hora">${horaResposta}</span>
             </div>
         `;
         
@@ -157,7 +166,7 @@ function pararGravacao() {
 }
 
 function exibirAudioGravado(audioBlob) {
-    const chatMessages = document.getElementById('chat-messages');
+    const chatMessages = document.getElementById('chat-mensagens');
     const horaAtual = new Date().toLocaleTimeString('pt-BR', { 
         hour: '2-digit', 
         minute: '2-digit' 
@@ -165,18 +174,18 @@ function exibirAudioGravado(audioBlob) {
     
     // Criar elemento de mensagem de áudio
     const audioDiv = document.createElement('div');
-    audioDiv.className = 'message sent';
+    audioDiv.className = 'mensagem mensagem-enviada';
     audioDiv.innerHTML = `
-        <div class="message-content">
-            <div class="message-bubble sent">
+        <div class="mensagem-conteudo">
+            <div class="mensagem-balao mensagem-balao-enviada">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span class="material-symbols-outlined" style="font-size: 16px;">mic</span>
                     <span>Áudio gravado</span>
                     <span class="material-symbols-outlined" style="font-size: 16px; margin-left: auto;">play_arrow</span>
                 </div>
             </div>
-            <div class="message-status">
-                <span class="message-hora">${horaAtual}</span>
+            <div class="mensagem-status">
+                <span class="mensagem-hora">${horaAtual}</span>
                 <span class="material-symbols-outlined">done_all</span>
             </div>
         </div>
@@ -213,14 +222,14 @@ function exibirAudioGravado(audioBlob) {
         });
         
         const respostaDiv = document.createElement('div');
-        respostaDiv.className = 'message received';
+        respostaDiv.className = 'mensagem mensagem-recebida';
         respostaDiv.innerHTML = `
-            <div class="message-foto"></div>
-            <div class="message-content">
-                <div class="message-bubble">
+            <div class="mensagem-foto" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCo2WOsnviTirPXViHLuIQx6Fc7P9RB04Mt2QW0Ne2r2uObuBI99pgO9Rwy0EMxZSQ8A90BNE-k-TPjnd6so7pDr1NlkwLqUCCBP0u8h704f5m159sd2XuCmX3Od-M3z99hL3voS5JZNWz7kNUFU6W9gmirlsY_s-eciw9XgtG1opIMFE6hWXIHKonrviDD-aYh6TLvnPlwTgJHKUCHDen1hK_Eut_AKTjhjZGNVC13TpeVDgBM0lV_YLF_WUdfQKipbGdIrG9T52c')"></div>
+            <div class="mensagem-conteudo">
+                <div class="mensagem-balao">
                     <p>Áudio recebido! Vou verificar isso.</p>
                 </div>
-                <span class="message-hora">${horaResposta}</span>
+                <span class="mensagem-hora">${horaResposta}</span>
             </div>
         `;
         
@@ -231,8 +240,8 @@ function exibirAudioGravado(audioBlob) {
 
 // TOGGLE VISIBILIDADE DE SENHA
 document.addEventListener('click', function(e) {
-    if (e.target.closest('.btn-visibility')) {
-        const btn = e.target.closest('.btn-visibility');
+    if (e.target.closest('.btn-visibilidade')) {
+        const btn = e.target.closest('.btn-visibilidade');
         const input = btn.parentElement.querySelector('input[type="password"], input[type="text"]');
         const icon = btn.querySelector('.material-symbols-outlined');
         
@@ -253,16 +262,8 @@ window.addEventListener('DOMContentLoaded', function() {
     // Inicializa a primeira tela
     mudarTela('tela-1');
     
-    // Configura busca na home
-    const buscaHome = document.querySelector('#tela-5 .search-bar input');
-    if (buscaHome) {
-        buscaHome.addEventListener('input', function(e) {
-            console.log('Buscando:', this.value);
-        });
-    }
-    
     // Configura busca na tela de pesquisa
-    const buscaPesquisa = document.querySelector('#tela-6 .search-bar input');
+    const buscaPesquisa = document.querySelector('#tela-6 .pesquisa-busca input');
     if (buscaPesquisa) {
         buscaPesquisa.addEventListener('input', function(e) {
             console.log('Pesquisando:', this.value);
